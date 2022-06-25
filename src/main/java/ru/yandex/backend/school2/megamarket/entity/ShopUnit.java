@@ -16,32 +16,23 @@ public class ShopUnit {
 
     @Id
     @Column(name = "id")
-    // TODO - valid uuid format
-    // TODO - not null
     private String id;
 
     @Column(name = "name")
-    // TODO - not null
     private String name;
 
     @Column(name = "date")
-    // TODO - not null
-    // TODO - iso
     @JsonFormat(shape = STRING, timezone = "UTC")
     private LocalDateTime date;
 
     @Column(name = "parent_id")
-    // TODO - valid uuid format
     private String parentId;
 
     @Column(name = "type")
     @Enumerated(EnumType.STRING)
-    // TODO - enum ShopUnitType
     private ShopUnitType type;
 
     @Column(name = "price")
-    // TODO - constraint according `type`
-    // TODO - validate size and type
     private Long price;
 
     @OneToMany(
