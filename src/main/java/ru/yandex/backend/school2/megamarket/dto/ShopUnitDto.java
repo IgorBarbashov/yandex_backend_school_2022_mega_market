@@ -1,6 +1,6 @@
 package ru.yandex.backend.school2.megamarket.dto;
 
-public class GoodDto {
+public class ShopUnitDto {
 
     private String id;
 
