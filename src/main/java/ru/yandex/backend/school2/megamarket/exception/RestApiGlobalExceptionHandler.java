@@ -1,5 +1,6 @@
 package ru.yandex.backend.school2.megamarket.exception;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -8,6 +9,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandler {
@@ -32,9 +34,11 @@ public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandle
     }
 
     @ExceptionHandler(value = {
+            NoSuchElementException.class,
+            EmptyResultDataAccessException.class,
             RestApiNotFoundException.class
     })
-    public ResponseEntity<RestApiErrorResponse> handleException(RestApiNotFoundException e) {
+    public ResponseEntity<RestApiErrorResponse> handleException(RuntimeException e) {
         RestApiErrorResponse data = new RestApiErrorResponse();
         data.setCode(REST_API_NOT_FOUND_CODE.value());
         data.setMessage(REST_API_NOT_FOUND_MESSAGE);

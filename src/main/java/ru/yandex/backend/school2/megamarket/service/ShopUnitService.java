@@ -61,6 +61,10 @@ public class ShopUnitService {
         return shopUnit;
     }
 
+    public void delete(String id) {
+        shopUnitRepository.deleteById(id);
+    }
+
     private void setRelations(List<ShopUnit> shopUnits) {
         HashMap<String, ShopUnit> shopUnitsHM = (HashMap<String, ShopUnit>) shopUnits
                 .stream().collect(Collectors.toMap(ShopUnit::getId, item -> item));

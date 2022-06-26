@@ -37,4 +37,9 @@ public class ShopUnitController {
         shopUnitService.importShopUnits(importDto);
     }
 
+    @DeleteMapping(path = "delete/{id}")
+    public void delete(@PathVariable(value = "id") String id) {
+        shopUnitService.delete(id);
+    }
+
 }
