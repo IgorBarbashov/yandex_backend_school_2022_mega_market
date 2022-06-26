@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShopUnitService {
@@ -32,9 +33,8 @@ public class ShopUnitService {
     }
 
     public void importShopUnits(ShopUnitImportDto importDto) {
-
         List<ShopUnitDto> shopUnitsDto = importDto.getItems();
-//                                LocalDateTime updateDate = importDto.getUpdateDate();
+        LocalDateTime updateDate = importDto.getUpdateDate();
 
         shopUnitValidator.init(shopUnitsDto);
 
@@ -44,19 +44,27 @@ public class ShopUnitService {
             throw new RestApiInvalidDataException();
         }
 
-        // - read necessary data from DB
-        HashMap<String, ShopUnitDto> shopUnitsHM = shopUnitValidator.getShopUnits();
-        List<ShopUnit> shopUnitsDB = shopUnitRepository.findByIdIn(List.copyOf(shopUnitsHM.keySet()));
-
-        // - validate consistence of the incoming and DB data
+        HashMap<String, ShopUnitDto> shopUnitsDtoHM = shopUnitValidator.getShopUnits();
+        List<ShopUnit> shopUnitsDB = shopUnitRepository.findByIdIn(List.copyOf(shopUnitsDtoHM.keySet()));
         shopUnitValidator.validateImportsAndDB(shopUnitsDB);
 
-        // prepare data for save to DB
-//                                shopUnitMapper.setDateTime(updateDate);
-//                                List<ShopUnit> shopUnits = shopUnitMapper.toEntity(shopUnitsDto);
+        shopUnitMapper.setDateTime(updateDate);
+        List<ShopUnit> shopUnits = shopUnitMapper.toEntity(shopUnitsDto);
+        setRelations(shopUnits);
 
-//                                shopUnitRepository.saveAll(shopUnits);
+        shopUnitRepository.saveAll(shopUnits);
+    }
 
+    private void setRelations(List<ShopUnit> shopUnits) {
+        HashMap<String, ShopUnit> shopUnitsHM = (HashMap<String, ShopUnit>) shopUnits
+                .stream().collect(Collectors.toMap(ShopUnit::getId, item -> item));
+
+        for (ShopUnit shopUnit : shopUnits) {
+            if (shopUnit.getParentId() != null) {
+                ShopUnit parent = shopUnitsHM.get(shopUnit.getParentId());
+                parent.addChild(shopUnit);
+            }
+        }
     }
 
 }
