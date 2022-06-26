@@ -65,6 +65,29 @@ public class ShopUnitService {
         shopUnitRepository.deleteById(id);
     }
 
+    public List<ShopUnit> getSales(String date) {
+        if (date == null) {
+            throw new RestApiInvalidDataException();
+        }
+
+        LocalDateTime dateFrom;
+        LocalDateTime dateTo;
+
+        try {
+            String rawDate = date;
+            if (date.indexOf(".") != -1) {
+                String[] splittedDateString = date.split("\\.");
+                rawDate = splittedDateString[0];
+            }
+            dateTo = LocalDateTime.parse(rawDate);
+            dateFrom = dateTo.minusHours(24);
+        } catch (Exception e) {
+            throw new RestApiInvalidDataException();
+        }
+
+        return shopUnitRepository.getOffersGreaterOrEqualDate(dateFrom.toString(), dateTo.toString());
+    }
+
     private void setRelations(List<ShopUnit> shopUnits) {
         HashMap<String, ShopUnit> shopUnitsHM = (HashMap<String, ShopUnit>) shopUnits
                 .stream().collect(Collectors.toMap(ShopUnit::getId, item -> item));

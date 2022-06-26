@@ -35,7 +35,7 @@ public class ShopUnit {
     @OneToMany(
             mappedBy = "parent",
             fetch = FetchType.LAZY,
-            cascade = CascadeType.REMOVE,
+            cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<ShopUnit> children = new ArrayList<>();

@@ -17,4 +17,9 @@ public interface ShopUnitRepository extends JpaRepository<ShopUnit, String> {
             nativeQuery = true)
     List<ShopUnit> findCategoriesByIds(List<String> ids);
 
+    @Query(
+            value = "SELECT * FROM shop_unit su WHERE type = 'OFFER' and su.date >= :dateFrom and su.date <= :dateTo",
+            nativeQuery = true)
+    List<ShopUnit> getOffersGreaterOrEqualDate(String dateFrom, String dateTo);
+
 }

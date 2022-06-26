@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.NoSuchElementException;
@@ -36,6 +37,7 @@ public class RestApiGlobalExceptionHandler extends ResponseEntityExceptionHandle
     @ExceptionHandler(value = {
             NoSuchElementException.class,
             EmptyResultDataAccessException.class,
+            EntityNotFoundException.class,
             RestApiNotFoundException.class
     })
     public ResponseEntity<RestApiErrorResponse> handleException(RuntimeException e) {

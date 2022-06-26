@@ -10,6 +10,7 @@ import ru.yandex.backend.school2.megamarket.exception.RestApiInvalidDataExceptio
 import ru.yandex.backend.school2.megamarket.service.ShopUnitService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
@@ -40,6 +41,11 @@ public class ShopUnitController {
     @DeleteMapping(path = "delete/{id}")
     public void delete(@PathVariable(value = "id") String id) {
         shopUnitService.delete(id);
+    }
+
+    @GetMapping(path = "sales")
+    public List<ShopUnit> getSales(@RequestParam(value = "date") String date) {
+        return shopUnitService.getSales(date);
     }
 
 }
