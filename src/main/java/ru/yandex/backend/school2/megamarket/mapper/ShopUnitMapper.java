@@ -64,6 +64,10 @@ public class ShopUnitMapper implements EntityDtoMapper<ShopUnit, ShopUnitDto> {
                 .collect(Collectors.toList());
     }
 
+    public ShopUnitDto toDto(ShopUnit source) {
+        return modelMapper.map(source, ShopUnitDto.class);
+    }
+
     @Override
     public ShopUnitDto toDto(ShopUnit source, Class<ShopUnitDto> destinationType) {
         return modelMapper.map(source, destinationType);

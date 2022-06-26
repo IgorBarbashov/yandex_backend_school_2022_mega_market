@@ -5,15 +5,14 @@ import org.springframework.stereotype.Service;
 import ru.yandex.backend.school2.megamarket.dto.ShopUnitDto;
 import ru.yandex.backend.school2.megamarket.dto.ShopUnitImportDto;
 import ru.yandex.backend.school2.megamarket.entity.ShopUnit;
+import ru.yandex.backend.school2.megamarket.entity.ShopUnitType;
 import ru.yandex.backend.school2.megamarket.exception.RestApiInvalidDataException;
 import ru.yandex.backend.school2.megamarket.mapper.ShopUnitMapper;
 import ru.yandex.backend.school2.megamarket.repository.ShopUnitRepository;
 import ru.yandex.backend.school2.megamarket.validation.ShopUnitValidator;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +55,12 @@ public class ShopUnitService {
         shopUnitRepository.saveAll(shopUnits);
     }
 
+    public ShopUnit getById(String id) {
+        ShopUnit shopUnit = shopUnitRepository.findById(id).get();
+        calculatePrice(shopUnit);
+        return shopUnit;
+    }
+
     private void setRelations(List<ShopUnit> shopUnits) {
         HashMap<String, ShopUnit> shopUnitsHM = (HashMap<String, ShopUnit>) shopUnits
                 .stream().collect(Collectors.toMap(ShopUnit::getId, item -> item));
@@ -68,8 +73,32 @@ public class ShopUnitService {
         }
     }
 
-    public ShopUnit getById(String id) {
-        return shopUnitRepository.findById(id).get();
+    private long[] calculatePrice(ShopUnit shopUnit) {
+        if (shopUnit.getType().equals(ShopUnitType.CATEGORY)) {
+            long[] counter = new long[]{0L, 0L};
+
+            if (shopUnit.getChildren().size() > 0) {
+                for (ShopUnit child : shopUnit.getChildren()) {
+                    long[] childCounter = calculatePrice(child);
+                    counter[0] += childCounter[0];
+                    counter[1] += childCounter[1];
+                }
+
+                if (counter[1] == 0) {
+                    shopUnit.setPrice(null);
+                } else {
+                    double average = Math.floor(counter[0] / counter[1]);
+                    shopUnit.setPrice(Double.valueOf(average).longValue());
+                }
+            } else {
+                shopUnit.setPrice(null);
+                shopUnit.setChildren(null);
+            }
+            return counter;
+        } else {
+            shopUnit.setChildren(null);
+            return new long[]{shopUnit.getPrice(), 1L};
+        }
     }
 
 }
