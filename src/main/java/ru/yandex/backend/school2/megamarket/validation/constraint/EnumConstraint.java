@@ -1,4 +1,4 @@
-package ru.yandex.backend.school2.megamarket.validator.constraint;
+package ru.yandex.backend.school2.megamarket.validation.constraint;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

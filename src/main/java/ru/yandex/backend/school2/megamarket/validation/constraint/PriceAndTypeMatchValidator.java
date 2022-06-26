@@ -1,4 +1,4 @@
-package ru.yandex.backend.school2.megamarket.validator.constraint;
+package ru.yandex.backend.school2.megamarket.validation.constraint;
 
 import org.springframework.beans.BeanWrapperImpl;
 import ru.yandex.backend.school2.megamarket.entity.ShopUnitType;

@@ -1,8 +1,8 @@
 package ru.yandex.backend.school2.megamarket.dto;
 
 import ru.yandex.backend.school2.megamarket.entity.ShopUnitType;
-import ru.yandex.backend.school2.megamarket.validator.constraint.EnumConstraint;
-import ru.yandex.backend.school2.megamarket.validator.constraint.PriceAndTypeMatchConstraint;
+import ru.yandex.backend.school2.megamarket.validation.constraint.EnumConstraint;
+import ru.yandex.backend.school2.megamarket.validation.constraint.PriceAndTypeMatchConstraint;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
