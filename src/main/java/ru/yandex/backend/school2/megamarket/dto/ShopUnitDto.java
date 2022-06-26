@@ -1,5 +1,8 @@
 package ru.yandex.backend.school2.megamarket.dto;
 
+import ru.yandex.backend.school2.megamarket.entity.ShopUnitType;
+import ru.yandex.backend.school2.megamarket.validator.constraint.EnumConstraint;
+
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 
@@ -16,7 +19,7 @@ public class ShopUnitDto {
     // TODO - valid uuid format
     private String parentId;
 
-    // TODO - @EnumConstraint(targetClassType = Type.class)
+    @EnumConstraint(targetClassType = ShopUnitType.class)
     @NotNull
     private String type;
 
