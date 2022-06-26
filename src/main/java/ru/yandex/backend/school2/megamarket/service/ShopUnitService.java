@@ -12,6 +12,7 @@ import ru.yandex.backend.school2.megamarket.validation.ShopUnitValidator;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -44,10 +45,11 @@ public class ShopUnitService {
         }
 
         // - read necessary data from DB
-                        //        List<ShopUnit> shopUnitsDB = shopUnitRepository.findByIdIn(shopUnitIdsDto);
-                        //        List<ShopUnit> shopUnitParentsDB = shopUnitRepository.findByIdIn(shopUnitParentIdsDto);
+        HashMap<String, ShopUnitDto> shopUnitsHM = shopUnitValidator.getShopUnits();
+        List<ShopUnit> shopUnitsDB = shopUnitRepository.findByIdIn(List.copyOf(shopUnitsHM.keySet()));
 
         // - validate consistence of the incoming and DB data
+        shopUnitValidator.validateImportsAndDB(shopUnitsDB);
 
         // prepare data for save to DB
 //                                shopUnitMapper.setDateTime(updateDate);
