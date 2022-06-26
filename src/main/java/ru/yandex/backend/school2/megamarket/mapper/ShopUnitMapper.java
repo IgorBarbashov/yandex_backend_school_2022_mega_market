@@ -20,6 +20,7 @@ public class ShopUnitMapper implements EntityDtoMapper<ShopUnit, ShopUnitDto> {
         mapper
                 .getConfiguration()
                 .setFieldMatchingEnabled(true)
+                .setAmbiguityIgnored(true)
                 .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
         this.modelMapper = mapper;
     }

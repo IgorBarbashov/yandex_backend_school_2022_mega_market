@@ -1,14 +1,12 @@
 package ru.yandex.backend.school2.megamarket.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING;
 
 @Entity
 @Table(name = "shop_unit")
@@ -22,7 +20,6 @@ public class ShopUnit {
     private String name;
 
     @Column(name = "date")
-    @JsonFormat(shape = STRING, timezone = "UTC")
     private LocalDateTime date;
 
     @Column(name = "parent_id")
@@ -84,6 +81,12 @@ public class ShopUnit {
 
     public LocalDateTime getDate() {
         return date;
+    }
+
+    @JsonGetter("date")
+    public String getDateAsString() {
+        String originalString = date.toString();
+        return originalString + ".000Z";
     }
 
     public void setDate(LocalDateTime date) {
