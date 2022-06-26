@@ -13,6 +13,10 @@ public class PriceAndTypeMatchValidator implements ConstraintValidator<PriceAndT
         Double priceValue = (Double) new BeanWrapperImpl(value).getPropertyValue("price");
         String typeValue = (String) new BeanWrapperImpl(value).getPropertyValue("type");
 
+        if (typeValue == null) {
+            return false;
+        }
+
         if (typeValue.equals(ShopUnitType.CATEGORY.name())) {
             return priceValue == null;
         } else if (typeValue.equals(ShopUnitType.OFFER.name())) {

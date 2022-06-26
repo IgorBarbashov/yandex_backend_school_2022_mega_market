@@ -2,6 +2,7 @@ package ru.yandex.backend.school2.megamarket.dto;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.List;
 
 public class ShopUnitImportDto {
 
+    @Valid
     @NotEmpty
     private List<ShopUnitDto> items;
 

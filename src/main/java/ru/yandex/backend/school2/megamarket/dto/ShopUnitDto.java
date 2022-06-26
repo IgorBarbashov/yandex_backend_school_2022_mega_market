@@ -11,17 +11,17 @@ import javax.validation.constraints.NotNull;
 public class ShopUnitDto {
 
     // TODO - valid uuid format
-    // TODO - not null
+    @NotNull
     private String id;
 
-    // TODO - not empty
+    @NotNull
     private String name;
 
     // TODO - valid uuid format
     private String parentId;
 
-    @EnumConstraint(targetClassType = ShopUnitType.class)
     @NotNull
+    @EnumConstraint(targetClassType = ShopUnitType.class)
     private String type;
 
     @Digits(integer = 19, fraction = 0)
