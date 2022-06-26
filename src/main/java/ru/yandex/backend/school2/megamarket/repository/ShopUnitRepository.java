@@ -13,8 +13,8 @@ public interface ShopUnitRepository extends JpaRepository<ShopUnit, String> {
     List<ShopUnit> findByIdIn(List<String> ids);
 
     @Query(
-            value = "SELECT COUNT(*) FROM shop_unit WHERE type = 'CATEGORY' and id in :ids",
+            value = "SELECT * FROM shop_unit WHERE type = 'CATEGORY' and id in :ids",
             nativeQuery = true)
-    int countCategoriesByIds(List<String> ids);
+    List<ShopUnit> findCategoriesByIds(List<String> ids);
 
 }

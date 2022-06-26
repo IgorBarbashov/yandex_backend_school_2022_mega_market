@@ -39,8 +39,8 @@ public class ShopUnitService {
         shopUnitValidator.init(shopUnitsDto);
 
         ArrayList<String> uncheckedRequiredCategoryIds = shopUnitValidator.getUncheckedRequiredCategories();
-        int countCategoriesByIds = shopUnitRepository.countCategoriesByIds(uncheckedRequiredCategoryIds);
-        if (countCategoriesByIds != uncheckedRequiredCategoryIds.size()) {
+        List<ShopUnit> categoriesByIds = shopUnitRepository.findCategoriesByIds(uncheckedRequiredCategoryIds);
+        if (categoriesByIds.size() != uncheckedRequiredCategoryIds.size()) {
             throw new RestApiInvalidDataException();
         }
 
@@ -50,6 +50,7 @@ public class ShopUnitService {
 
         shopUnitMapper.setDateTime(updateDate);
         List<ShopUnit> shopUnits = shopUnitMapper.toEntity(shopUnitsDto);
+        shopUnits.addAll(categoriesByIds);
         setRelations(shopUnits);
 
         shopUnitRepository.saveAll(shopUnits);
@@ -65,6 +66,10 @@ public class ShopUnitService {
                 parent.addChild(shopUnit);
             }
         }
+    }
+
+    public ShopUnit getById(String id) {
+        return shopUnitRepository.findById(id).get();
     }
 
 }
