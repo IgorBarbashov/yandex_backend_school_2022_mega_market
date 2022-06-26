@@ -18,6 +18,10 @@ public class ShopUnitValidator {
 
     private ArrayList<String> uncheckedRequiredCategories; // shopUnitRequiredCategories, которых нет в imports, их надо проверять по БД
 
+    public ArrayList<String> getUncheckedRequiredCategories() {
+        return uncheckedRequiredCategories;
+    }
+
     public ShopUnitValidator() {
     }
 

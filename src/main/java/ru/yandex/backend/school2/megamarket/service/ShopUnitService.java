@@ -4,10 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.backend.school2.megamarket.dto.ShopUnitDto;
 import ru.yandex.backend.school2.megamarket.dto.ShopUnitImportDto;
+import ru.yandex.backend.school2.megamarket.entity.ShopUnit;
+import ru.yandex.backend.school2.megamarket.exception.RestApiInvalidDataException;
 import ru.yandex.backend.school2.megamarket.mapper.ShopUnitMapper;
 import ru.yandex.backend.school2.megamarket.repository.ShopUnitRepository;
 import ru.yandex.backend.school2.megamarket.validation.ShopUnitValidator;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,18 +33,15 @@ public class ShopUnitService {
     public void importShopUnits(ShopUnitImportDto importDto) {
 
         List<ShopUnitDto> shopUnitsDto = importDto.getItems();
-                        //        LocalDateTime updateDate = importDto.getUpdateDate();
+//                                LocalDateTime updateDate = importDto.getUpdateDate();
 
-                        //        List<String> shopUnitIdsDto = shopUnitsDto.stream().map(ShopUnitDto::getId).collect(Collectors.toList());
-                        //        List<String> shopUnitParentIdsDto = shopUnitsDto.stream().map(ShopUnitDto::getParentId).collect(Collectors.toList());
-
-        // validation-level-1:
-        // - validate input data for consistence
         shopUnitValidator.init(shopUnitsDto);
 
-
-
-
+        ArrayList<String> uncheckedRequiredCategoryIds = shopUnitValidator.getUncheckedRequiredCategories();
+        int countCategoriesByIds = shopUnitRepository.countCategoriesByIds(uncheckedRequiredCategoryIds);
+        if (countCategoriesByIds != uncheckedRequiredCategoryIds.size()) {
+            throw new RestApiInvalidDataException();
+        }
 
         // - read necessary data from DB
                         //        List<ShopUnit> shopUnitsDB = shopUnitRepository.findByIdIn(shopUnitIdsDto);
@@ -49,10 +50,10 @@ public class ShopUnitService {
         // - validate consistence of the incoming and DB data
 
         // prepare data for save to DB
-                        //        shopUnitMapper.setDateTime(updateDate);
-                        //        List<ShopUnit> shopUnits = shopUnitMapper.toEntity(shopUnitsDto);
+//                                shopUnitMapper.setDateTime(updateDate);
+//                                List<ShopUnit> shopUnits = shopUnitMapper.toEntity(shopUnitsDto);
 
-                        //        shopUnitRepository.saveAll(shopUnits);
+//                                shopUnitRepository.saveAll(shopUnits);
 
     }
 
