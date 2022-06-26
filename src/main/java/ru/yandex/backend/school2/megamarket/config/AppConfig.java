@@ -7,6 +7,7 @@ import org.springframework.format.support.DefaultFormattingConversionService;
 import org.springframework.format.support.FormattingConversionService;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import ru.yandex.backend.school2.megamarket.mapper.ShopUnitMapper;
 
 import java.time.format.DateTimeFormatter;
 
@@ -24,6 +25,11 @@ public class AppConfig extends WebMvcConfigurationSupport {
         dateTimeRegistrar.registerFormatters(conversionService);
 
         return conversionService;
+    }
+
+    @Bean
+    public ShopUnitMapper goodMapper() {
+        return new ShopUnitMapper();
     }
 
 }
