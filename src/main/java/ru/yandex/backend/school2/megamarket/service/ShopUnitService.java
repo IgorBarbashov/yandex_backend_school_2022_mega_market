@@ -49,9 +49,8 @@ public class ShopUnitService {
 
         shopUnitMapper.setDateTime(updateDate);
         List<ShopUnit> shopUnits = shopUnitMapper.toEntity(shopUnitsDto);
+        setRelations(shopUnits, categoriesByIds);
         shopUnits.addAll(categoriesByIds);
-        setRelations(shopUnits);
-
         shopUnitRepository.saveAll(shopUnits);
     }
 
@@ -88,8 +87,10 @@ public class ShopUnitService {
         return shopUnitRepository.getOffersGreaterOrEqualDate(dateFrom.toString(), dateTo.toString());
     }
 
-    private void setRelations(List<ShopUnit> shopUnits) {
-        HashMap<String, ShopUnit> shopUnitsHM = (HashMap<String, ShopUnit>) shopUnits
+    private void setRelations(List<ShopUnit> shopUnits, List<ShopUnit> categoriesByIds) {
+        List<ShopUnit> combineList = new ArrayList<>(shopUnits);
+        combineList.addAll(categoriesByIds);
+        HashMap<String, ShopUnit> shopUnitsHM = (HashMap<String, ShopUnit>) combineList
                 .stream().collect(Collectors.toMap(ShopUnit::getId, item -> item));
 
         for (ShopUnit shopUnit : shopUnits) {
